@@ -72,5 +72,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
-Based on :
-https://dev.to/thisdotmedia/build-an-api-gateway-with-nestjs-in-10-minutes-16db
+Based on : 
+https://medium.com/@iago.maiasilva/construindo-uma-api-com-nestjs-postgresql-e-docker-parte-1-criando-nosso-primeiro-endpoint-248d4b8ecc9c
