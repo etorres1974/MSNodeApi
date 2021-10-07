@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./api-gateway
+      target: development
+    volumes:
+      - ./api-gateway/src/:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug  
+    environment: 
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - 3000:3000
+
+  service-a:
+    build:
+      dockerfile: Dockerfile
+      context: ./service-a
+      target: development
+    volumes:
+      - ./api-gateway/src/:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    environment: 
+      NODE_ENV: development
+      PORT: 3001
+    ports:
+      - 3001:3001

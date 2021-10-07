@@ -10,8 +10,8 @@ import { AppService } from "./app.service";
         name: "SERVICE_A",
         transport: Transport.TCP,
         options: {
-          host: "127.0.0.1",
-          port: 8888
+          host: "service-a",
+          port: 3001
         }
       }
     ])

@@ -1,0 +1,30 @@
+FROM node:14 AS development
+
+WORKDIR /src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+FROM node:14 AS production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /src/app
+
+COPY --from=development /src/app/ .
+
+EXPOSE 3000
+
+CMD [ "node", "dist/main" ]
+
+
+
+# Example Commands to build and run the dockerfile
+# docker build -t thomas-nest .
+# docker run thomas-nest
