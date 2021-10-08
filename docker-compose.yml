@@ -29,3 +29,48 @@ services:
       PORT: 3001
     ports:
       - 3001:3001
+#-----------------DB-----------------#
+  service-database:
+    env_file: .env
+    build:
+      dockerfile: Dockerfile
+      context: ./service-database
+      target: development
+    volumes:
+      - ./service-database/src/:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    environment: 
+      NODE_ENV: development
+      PORT: 3003
+      MYSQL_HOST: mysqldb
+      MYSQL_DATABASE: nestjs
+    ports:
+      - 3003:3003 
+    networks:
+      - mysql-compose-network
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_DATABASE: "nest"
+    ports:
+      - "3306:3306"
+    volumes:
+       - ${localDockerVolumes}:/var/lib/mysql
+    networks:
+      - mysql-compose-network
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - mysql-compose-network
+
+networks: 
+  mysql-compose-network:
+    driver: bridge
