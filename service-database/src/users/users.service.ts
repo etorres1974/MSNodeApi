@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -19,5 +19,14 @@ export class UsersService {
     } else {
       return this.userRepository.createUser(createUserDto, UserRole.ADMIN);
     }
+  }
+  async findUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne(userId, {
+      select: ['email', 'name', 'role', 'id'],
+    });
+
+    if (!user) throw new NotFoundException('Usuário não encontrado');
+
+    return user;
   }
 }
