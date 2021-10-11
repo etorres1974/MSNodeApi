@@ -8,10 +8,10 @@ import { AppService } from "./app.service";
     ClientsModule.register([
       {
         name: "SERVICE_A",
-        transport: Transport.TCP,
+        transport: 0,//Transport.TCP
         options: {
           host: "service-a",
-          port: 3001
+          port: process.env.SERVICE_A_PORT
         }
       }
     ])

@@ -10,7 +10,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: "service-a",
-      port: 3001
+      port: process.env.SERVICE_A_PORT
     }
   });
   app.listen();

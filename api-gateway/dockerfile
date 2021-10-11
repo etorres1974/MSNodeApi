@@ -19,7 +19,7 @@ WORKDIR /src/app
 
 COPY --from=development /src/app/ .
 
-EXPOSE 3000
+EXPOSE ${API_GATEWAY_PORT}
 
 CMD [ "node", "dist/main" ]
 

@@ -3,7 +3,10 @@ services:
   front:
     build: ./frontend
     environment: 
-      PORT: 2999
+      PORT: ${FRONT_PORT}
+    ports:
+      - "${FRONT_HOST}:${FRONT_PORT}"
+      
   api:
     build:
       dockerfile: Dockerfile
@@ -15,9 +18,9 @@ services:
     command: npm run start:debug  
     environment: 
       NODE_ENV: development
-      PORT: 3000
+      PORT: ${API_GATEWAY_PORT}
     ports:
-      - 3000:3000
+      - "${API_HOST}:${API_GATEWAY_PORT}"
 
   service-a:
     build:
@@ -30,12 +33,11 @@ services:
     command: npm run start:debug
     environment: 
       NODE_ENV: development
-      PORT: 3001
+      PORT: ${SERVICE_A_PORT}
     ports:
-      - 3001:3001
+      - "${SERVICE_A_PORT}:${SERVICE_A_PORT}"
 #-----------------DB-----------------#
   service-database:
-    env_file: .env
     build:
       dockerfile: Dockerfile
       context: ./service-database
@@ -46,11 +48,11 @@ services:
     command: npm run start:debug
     environment: 
       NODE_ENV: development
-      PORT: 3003
+      PORT: ${SERVICE_DB}
       MYSQL_HOST: mysqldb
       MYSQL_DATABASE: nestjs
     ports:
-      - 3003:3003 
+      - "${SERVICE_DB}:${SERVICE_DB}"
     networks:
       - mysql-compose-network
     depends_on:
@@ -62,16 +64,16 @@ services:
       MYSQL_ROOT_PASSWORD: "admin"
       MYSQL_DATABASE: "nest"
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
     volumes:
-       - ${localDockerVolumes}:/var/lib/mysql
+       - ${LOCAL_DOCKER_VOLUMES}:/var/lib/mysql
     networks:
       - mysql-compose-network
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - ${DB_HOST}:8080
     networks:
       - mysql-compose-network
 
