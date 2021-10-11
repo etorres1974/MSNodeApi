@@ -8,6 +8,7 @@ import { UserRole } from './user-roles.enum';
 
 @Injectable()
 export class UsersService {
+  publicUserSelect : Array<keyof User> = ['email', 'name', 'role', 'id']
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
@@ -28,5 +29,13 @@ export class UsersService {
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
     return user;
+  }
+
+  async findAllUsers(): Promise<Array<User>> {
+    const users = await this.userRepository.find({
+      select: this.publicUserSelect
+    });
+    
+    return users;
   }
 }

@@ -5,7 +5,7 @@ export const typeOrmConfig: TypeOrmModuleOptions =
 {
   "type": "mysql",
   "host": process.env.MYSQL_HOST,
-  "port": 3306,
+  "port": process.env.MYSQL_PORT,
   "username": "root",
   "password": "admin",
   "database": process.env.MYSQL_DATABASE,

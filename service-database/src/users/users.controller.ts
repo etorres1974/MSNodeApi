@@ -31,4 +31,13 @@ export class UsersController {
       message: 'Usuário encontrado',
     };
   }
+
+  @Get()
+  async getAllusers(){
+    const users = await this.usersService.findAllUsers()
+    return {
+      users,
+      message: `${users.length} usuários encontrados`,
+    };
+  }
 }

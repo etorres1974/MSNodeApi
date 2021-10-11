@@ -39,7 +39,6 @@ services:
 #-----------------DB-----------------#
   service-database:
     build:
-      dockerfile: Dockerfile
       context: ./service-database
       target: development
     volumes:
