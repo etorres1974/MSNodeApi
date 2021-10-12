@@ -7,6 +7,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dtos/return-user.dto';
 import { UserRole } from './user-roles.enum';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('users')
 export class UsersController {
@@ -32,6 +33,7 @@ export class UsersController {
     };
   }
 
+  @MessagePattern('allUsers')
   @Get()
   async getAllusers(){
     const users = await this.usersService.findAllUsers()

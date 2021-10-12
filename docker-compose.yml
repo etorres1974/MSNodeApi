@@ -6,6 +6,8 @@ services:
       PORT: ${FRONT_PORT}
     ports:
       - "${FRONT_HOST}:${FRONT_PORT}"
+    networks:
+      - frontend
       
   api:
     build:
@@ -21,6 +23,9 @@ services:
       PORT: ${API_GATEWAY_PORT}
     ports:
       - "${API_HOST}:${API_GATEWAY_PORT}"
+    networks:
+      - frontend
+      - backend
 
   service-a:
     build:
@@ -36,8 +41,10 @@ services:
       PORT: ${SERVICE_A_PORT}
     ports:
       - "${SERVICE_A_PORT}:${SERVICE_A_PORT}"
+    networks:
+      - backend
 #-----------------DB-----------------#
-  service-database:
+  service-db:
     build:
       context: ./service-database
       target: development
@@ -47,13 +54,14 @@ services:
     command: npm run start:debug
     environment: 
       NODE_ENV: development
-      PORT: ${SERVICE_DB}
+      PORT: ${SERVICE_DB_PORT}
       MYSQL_HOST: mysqldb
       MYSQL_DATABASE: nestjs
     ports:
-      - "${SERVICE_DB}:${SERVICE_DB}"
+      - "${SERVICE_DB_PORT}:${SERVICE_DB_PORT}"
     networks:
-      - mysql-compose-network
+      - mysql
+      - backend
     depends_on:
       - mysqldb
 
@@ -67,15 +75,19 @@ services:
     volumes:
        - ${LOCAL_DOCKER_VOLUMES}:/var/lib/mysql
     networks:
-      - mysql-compose-network
+      - mysql
 
   adminer:
     image: adminer
     ports:
       - ${DB_HOST}:8080
     networks:
-      - mysql-compose-network
+      - mysql
 
 networks: 
-  mysql-compose-network:
+  mysql:
     driver: bridge
+  backend:
+    driver : bridge
+  frontend:
+    driver : bridge

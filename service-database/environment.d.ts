@@ -2,7 +2,6 @@ declare global {
     namespace NodeJS {
       interface ProcessEnv {
         MYSQL_PORT: number;
-        SERVICE_DB: number
       }
     }
   }

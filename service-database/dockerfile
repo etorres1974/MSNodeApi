@@ -19,7 +19,7 @@ WORKDIR /src/app
 
 COPY --from=development /src/app/ .
 
-EXPOSE ${SERVICE_DB}
+EXPOSE ${SERVICE_DB_PORT}
 
 CMD [ "node", "dist/main" ]
 
