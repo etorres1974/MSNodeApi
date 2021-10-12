@@ -56,7 +56,7 @@ services:
       NODE_ENV: development
       PORT: ${SERVICE_DB_PORT}
       MYSQL_HOST: mysqldb
-      MYSQL_DATABASE: nestjs
+      MYSQL_DATABASE: nest
     ports:
       - "${SERVICE_DB_PORT}:${SERVICE_DB_PORT}"
     networks:
