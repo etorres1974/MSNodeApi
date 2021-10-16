@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Account from '@/components/Account'
-import Shopping from '@/components/Shopping'
-import Cart from '@/components/Cart'
+import Account from '@/views/Account'
+import Shopping from '@/views/Shopping'
+import Cart from '@/views/Cart'
 
 Vue.use(Router)
 
