@@ -1,28 +1,29 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h1>{{users}}</h1>
+    <h1>{{ title }}</h1>
+    <h1>{{ products}}</h1>
   </div>
 </template>
 
 <script>
-
 import axios from "../services/axios.js"
 export default {
-  name: 'HelloWorld',
+  title: 'Shopping',
+  components:{
+  },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      users : []
+      title: 'Shopping',
+      products : []
     }
   },
   methods: {
-    async getAllUsers(){
-      this.users = await axios.get('allUsers')
+    async getAllProducts(){
+      this.products = await axios.get('allProducts')
     }
   },
   created() {
-    this.getAllUsers()
+    this.getAllProducts()
   }
 }
 </script>
