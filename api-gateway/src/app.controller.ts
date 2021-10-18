@@ -1,5 +1,6 @@
-import { Controller, Get, Logger } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { LoginDTO } from "./dtos/LoginDTO";
 
 @Controller()
 export class AppController {
@@ -15,5 +16,10 @@ export class AppController {
   @Get("/allUsers")
   async getAllUsers() {
     return await this.appService.getAllUsers()
+  }
+
+  @Post("/login")
+  async login(@Body() loginDTO : LoginDTO) {
+    return await this.appService.login(loginDTO)
   }
 }

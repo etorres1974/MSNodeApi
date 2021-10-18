@@ -5,6 +5,7 @@ import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
 import { UserRole } from './user-roles.enum';
+import { LoginUserDto } from './dtos/login-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -37,5 +38,13 @@ export class UsersService {
     });
     
     return users;
+  }
+
+  async loginUser(loginDTO : LoginUserDto) : Promise<Array<User>>{
+    //todo usar dto para pegar usuario ou falhar
+    const user = await this.userRepository.find(
+      { select: this.publicUserSelect }
+    )
+    return user
   }
 }

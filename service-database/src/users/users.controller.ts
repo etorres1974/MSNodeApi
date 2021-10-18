@@ -4,6 +4,7 @@ import { Controller,
   Get,
   Param,} from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { LoginUserDto } from './dtos/login-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dtos/return-user.dto';
 import { UserRole } from './user-roles.enum';
@@ -34,7 +35,6 @@ export class UsersController {
   }
 
   @MessagePattern('allUsers')
-  @Get()
   async getAllusers(){
     const users = await this.usersService.findAllUsers()
     return {
@@ -42,4 +42,14 @@ export class UsersController {
       message: `${users.length} usuários encontrados`,
     };
   }
+
+  @MessagePattern('login')
+  async login(@Body() loginDTO : LoginUserDto){
+    const user = await this.usersService.loginUser(loginDTO)
+    return {
+      user,
+      message : `Success ${loginDTO.email} ${loginDTO.password}`
+    }
+  }
+
 }

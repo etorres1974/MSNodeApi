@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from "../services/axios.js";
+import apiClient from "../services/apiClient";
 import cache from "../services/cache.js"
 export default {
   name: "LoginRegisterFormt",
@@ -59,21 +59,16 @@ export default {
             this.submitRegister()
     },
     async submitLogin(){
-        var form = { email : this.email, password : this.pass}
-        console.log("Login", form)
-        await axios.post('login', form)
+        await apiClient.login(this.email, this.pass)
         //TODO : Salvar usuario logado
         cache.setUser(2)
     },
     async submitRegister(){
-        var form = { 
-            name : this.name,
-            email : this.email,
-            pass : this.pass,
-            confirmPass : this.confirmPass
-        }
-        console.log("Register", form)
-        await axios.post('register', form)
+        await apiClient.register(
+            this.name,
+            this.email,
+            this.pass,
+            this.confirmPass)
         //TODO : Salvar usuario logado
         cache.setUser(2)
     }
