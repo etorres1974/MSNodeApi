@@ -50,6 +50,8 @@ export class AppService {
     const payload = createUserDto;
     return await this.clientServiceDatabase
       .send<string>(pattern, payload)
-
+      .pipe(
+        map((data: string) => ({ data , duration: Date.now() - startTs }))
+      );
   }
 }

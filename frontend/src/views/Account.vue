@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    {{users}}
     <div v-if="isLogged"> Logado {{users}}</div>
     <div v-else> 
       <LoginRegisterForm/>
@@ -23,7 +24,7 @@ export default {
   },
   methods: {
     async getAllUsers(){
-      //this.users = await axios.get('allUsers')
+      this.users = await axios.get('allUsers')
     }
   },
   computed:{

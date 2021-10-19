@@ -4,6 +4,7 @@ services:
     build: ./frontend
     environment: 
       PORT: ${FRONT_PORT}
+      API_GATEWAY_PORT: ${API_GATEWAY_PORT}
     ports:
       - "${FRONT_HOST}:${FRONT_PORT}"
     networks:
