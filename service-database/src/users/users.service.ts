@@ -4,27 +4,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
-import { UserRole } from './user-roles.enum';
 import { LoginUserDto } from './dtos/login-user.dto';
 
 @Injectable()
 export class UsersService {
-  publicUserSelect : Array<keyof User> = ['email', 'name', 'role', 'id']
+  publicUserSelect : Array<keyof User> = ['email', 'name', 'id']
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
 
-  async createAdminUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     if (createUserDto.password != createUserDto.passwordConfirmation) {
       throw new UnprocessableEntityException('As senhas não conferem');
     } else {
-      return this.userRepository.createUser(createUserDto, UserRole.ADMIN);
+      return this.userRepository.createUser(createUserDto);
     }
   }
+
+  async loginUser(loginDTO : LoginUserDto) : Promise<User>{
+    const user = await this.userRepository.checkCredentials(loginDTO)
+    return user
+  }
+
   async findUserById(userId: string): Promise<User> {
     const user = await this.userRepository.findOne(userId, {
-      select: ['email', 'name', 'role', 'id'],
+      select: this.publicUserSelect,
     });
 
     if (!user) throw new NotFoundException('Usuário não encontrado');
@@ -40,11 +45,6 @@ export class UsersService {
     return users;
   }
 
-  async loginUser(loginDTO : LoginUserDto) : Promise<Array<User>>{
-    //todo usar dto para pegar usuario ou falhar
-    const user = await this.userRepository.find(
-      { select: this.publicUserSelect }
-    )
-    return user
-  }
+
+
 }

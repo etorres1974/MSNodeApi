@@ -1,6 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { map } from "rxjs/operators";
+import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginDTO } from "./dtos/LoginDTO";
 
 @Injectable()
@@ -39,7 +40,16 @@ export class AppService {
     return await this.clientServiceDatabase
       .send<string>(pattern, payload)
       .pipe(
-        map((message: string) => ({ message, duration: Date.now() - startTs }))
+        map((data: string) => ({ data , duration: Date.now() - startTs }))
       );
+  }
+
+  async signUp(createUserDto : CreateUserDto){
+    const startTs = Date.now();
+    const pattern = 'signUp';
+    const payload = createUserDto;
+    return await this.clientServiceDatabase
+      .send<string>(pattern, payload)
+
   }
 }
