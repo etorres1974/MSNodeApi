@@ -7,6 +7,8 @@ import {
   InternalServerErrorException,
 } from "@nestjs/common";
 import { LoginUserDto } from "./dtos/login-user.dto";
+import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -15,8 +17,8 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.name = name;
     user.status = true;
-    user.confirmationToken = "fakeToken";
-    user.salt = "salt";
+    user.confirmationToken = crypto.randomBytes(32).toString('hex');
+    user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
     try {
       await user.save();
@@ -35,7 +37,7 @@ export class UserRepository extends Repository<User> {
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
-    return password; //TODO ENCRIPTAR SENHA \_o_/
+    return bcrypt.hash(password, salt);
   }
 
   async checkCredentials(credentialsDto: LoginUserDto): Promise<User> {
