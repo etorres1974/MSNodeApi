@@ -5,20 +5,42 @@ import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
 import { LoginUserDto } from './dtos/login-user.dto';
-
+import {
+  InternalServerErrorException,
+} from "@nestjs/common";
+import { UserRole } from "./user.roles.enum";
+import { ClientRepository } from 'src/client/client.repository';
+import { CreateClientDto } from 'src/client/dtos/create-client.dto';
 @Injectable()
 export class UsersService {
   publicUserSelect : Array<keyof User> = ['email', 'name', 'id']
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+
+    @InjectRepository(ClientRepository)
+    private clientRepository : ClientRepository
   ) {}
 
+  async createSpecialization(user : User, role : UserRole, createClientDto : CreateClientDto){
+    if(role == UserRole.CLIENT)
+      return this.clientRepository.createClient(createClientDto, user)
+    else if ( role == UserRole.DOCTOR)
+      return new InternalServerErrorException("createDoc") //this.createDoctor()
+    else 
+      throw new InternalServerErrorException(
+        "Especialização do usuário não é válida + \n" + role
+      )
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    if (createUserDto.password != createUserDto.passwordConfirmation) {
+    const { password , passwordConfirmation, role, createClientDto } = createUserDto
+    if (password != passwordConfirmation) {
       throw new UnprocessableEntityException('As senhas não conferem');
     } else {
-      return this.userRepository.createUser(createUserDto);
+      const user = await this.userRepository.createUser(createUserDto);
+      await this.createSpecialization(user, role, createClientDto)
+      return user
     }
   }
 

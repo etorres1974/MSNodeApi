@@ -11,8 +11,9 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, name, password } = createUserDto;
+    const { email, name, password} = createUserDto;
     const user = this.create();
     user.email = email;
     user.name = name;
@@ -20,6 +21,7 @@ export class UserRepository extends Repository<User> {
     user.confirmationToken = crypto.randomBytes(32).toString('hex');
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
+
     try {
       await user.save();
       delete user.password;
