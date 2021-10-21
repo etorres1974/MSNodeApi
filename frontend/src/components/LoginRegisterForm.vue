@@ -12,11 +12,33 @@
         </v-btn>
       </v-fade-transition>
     </v-row>
-
+    
     <div id="form">
       <v-fade-transition v-if="register">
-        <v-text-field v-model="name" placeholder="Name"></v-text-field>
+        <div>
+           <v-radio-group v-model="radioRole">
+              <v-radio
+                v-for="r in roles"
+                :key="r"
+                :label="`${r.placeholder}`"
+                :value="r.enum"
+              ></v-radio>
+           </v-radio-group>
+           <v-text-field v-model="name" placeholder="Name"></v-text-field>
+        </div>
       </v-fade-transition>
+
+      
+      <div v-if="radioRole == 'Doctor' "> 
+        <v-text-field v-model="registro" placeholder="Registro Profissional"></v-text-field> 
+        <v-text-field v-model="especialidade" placeholder="Especialidade Médica"></v-text-field> 
+      </div>
+      <div v-if="radioRole == 'Paciente' ">
+        <v-text-field v-model="birth" placeholder="Data Nascimento"></v-text-field>
+        <v-text-field v-model="height" placeholder="Altura"></v-text-field>
+        <v-text-field v-model="weight" placeholder="Peso"></v-text-field>
+      </div>
+
       <div>
         <v-text-field v-model="email" placeholder="Email"></v-text-field>
         <v-text-field v-model="pass" placeholder="Password"></v-text-field>
@@ -26,13 +48,13 @@
       </v-fade-transition>
     </div>
     <div id="actions">
-      <v-btn @click="submit">Submit</v-btn>
+      <v-btn @click="submitRegister">Submit</v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import apiClient from "../services/apiClient";
+import apiUserClient from "../services/apiUserClient";
 import cache from "../services/cache.js"
 export default {
   name: "LoginRegisterFormt",
@@ -41,10 +63,22 @@ export default {
     return {
       login: true,
       register: false,
+      radioRole: "",
+      roles: [ { enum : "Doctor" , placeholder : "Médico" }
+              , { enum : "Client", placeholder : "Paciente" }],
       name : "",
       email: "",
       pass: "",
-      confirmPass : ""
+      confirmPass : "",
+      //Client
+      weight : "",
+      height : "",
+      birth : "",
+
+      //Doctor
+      registro : "",
+      especialidade : ""
+
     };
   },
   methods: {
@@ -59,18 +93,41 @@ export default {
             this.submitRegister()
     },
     async submitLogin(){
-        await apiClient.login(this.email, this.pass)
+        await apiUserClient.login(this.email, this.pass)
+        //TODO : Salvar usuario logado
+        cache.setUser(2)
+    },
+    async registerClient(){
+        const user = await apiUserClient.registerClient(
+            this.radioRole,
+            this.name,
+            this.email,
+            this.pass,
+            this.confirmPass,
+            this.birth,
+            this.height,
+            this.weight)
+        //TODO : Salvar usuario logado
+        cache.setUser(2)
+    },
+    async registerDoctor(){
+      const user = await apiUserClient.registerDoctor(
+            this.radioRole,
+            this.name,
+            this.email,
+            this.pass,
+            this.confirmPass,
+            this.registro,
+            this.especialidade)
         //TODO : Salvar usuario logado
         cache.setUser(2)
     },
     async submitRegister(){
-        await apiClient.register(
-            this.name,
-            this.email,
-            this.pass,
-            this.confirmPass)
-        //TODO : Salvar usuario logado
-        cache.setUser(2)
+      console.log("SubmitRegister", this.radioRole)
+      if(this.radioRole == "Client")
+        this.registerClient()
+      else if (this.radioRole == "Doctor")
+        this.registerDoctor()
     }
   },
   computed: {
