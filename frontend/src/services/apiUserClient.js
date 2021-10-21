@@ -4,9 +4,15 @@ class ApiUserClient {
     async login(email, pass){
       const  form = { email :email, password : pass}
       console.log("Login", form)
-      const  res = await axios.post('login', form)
-      console.log("Response", res)
-      return res
+      const res = await axios.post('login', form)
+        .catch( (error) => {
+            const { data , status } = error.response
+            console.log(`Catch Error login ${status}`, data)
+            return { data , status }
+        })
+      console.log("Login Response", res)
+      const { data , status } = res
+      return { data ,  status }
     }
 
     async registerClient(role,
@@ -26,7 +32,11 @@ class ApiUserClient {
             role
         }
         console.log("Register", form)
-        var response = await axios.post('signUp', form)
+        var response = await axios.post('signUp', form).catch( (error) => {
+            const { data , status } = error.response
+            console.log(`Catch Error Register Client ${status}`, data)
+            return { data , status }
+        })
         console.log("Response", response)
         return response
     }
@@ -44,7 +54,11 @@ class ApiUserClient {
             createDoctorDto 
         }
         console.log("Register", form)
-        var response = await axios.post('signUp', form)
+        var response = await axios.post('signUp', form).catch( (error) => {
+            const { data , status } = error.response
+            console.log(`Catch Error Register Doc ${status}`, data)
+            return { data , status }
+        })
         console.log("Response", response)
         return response
     }

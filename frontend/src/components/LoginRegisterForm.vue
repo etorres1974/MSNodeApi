@@ -29,11 +29,11 @@
       </v-fade-transition>
 
       
-      <div v-if="radioRole == 'Doctor' "> 
+      <div v-if="radioRole == 'Doctor' && register "> 
         <v-text-field v-model="registro" placeholder="Registro Profissional"></v-text-field> 
         <v-text-field v-model="especialidade" placeholder="Especialidade Médica"></v-text-field> 
       </div>
-      <div v-if="radioRole == 'Client' ">
+      <div v-if="radioRole == 'Client' && register ">
         <v-text-field v-model="birth" placeholder="Data Nascimento"></v-text-field>
         <v-text-field v-model="height" placeholder="Altura"></v-text-field>
         <v-text-field v-model="weight" placeholder="Peso"></v-text-field>
@@ -48,19 +48,24 @@
       </v-fade-transition>
     </div>
     <div id="actions">
-      <v-btn @click="submitRegister">Submit</v-btn>
+      <v-btn @click="submit">Submit</v-btn>
     </div>
+    
   </div>
 </template>
 
 <script>
+import EventBus from '../services/event-bus'
 import apiUserClient from "../services/apiUserClient";
 import cache from "../services/cache.js"
 export default {
   name: "LoginRegisterFormt",
-  components: {},
   data() {
     return {
+      success : false,
+      error : false,
+      sucessMSG : "Success",
+      errorMSG : "Error",
       login: true,
       register: false,
       radioRole: "",
@@ -93,12 +98,35 @@ export default {
             this.submitRegister()
     },
     async submitLogin(){
-        await apiUserClient.login(this.email, this.pass)
-        //TODO : Salvar usuario logado
-        cache.setUser(2)
+        const res = await apiUserClient.login(this.email, this.pass)
+        console.log("SubmitLogin <--", res)
+        if(res.status == 201)
+          this.loginSuccess(res.data.data)
+        else
+          this.loginFail(res.data)
+    },
+    loginSuccess(data){
+        const { user, spec , message} = data
+        cache.setUser({ user,spec })
+        EventBus.$emit('success-toast', message)
+        EventBus.$emit('user-login', { user,spec })
+    },
+    loginFail(data){
+        const { status , message} = data
+        EventBus.$emit('error-toast', message)
+    },
+    registerResolve(res){
+      console.log("REGISTER RESOLVE", res)
+      if(res.status == 201){
+        const { user, spec , message} = res.data
+        EventBus.$emit('success-toast', message)
+      }else{
+        const { status , message} = data
+        EventBus.$emit('error-toast', message)
+      }
     },
     async registerClient(){
-        const user = await apiUserClient.registerClient(
+        const res = await apiUserClient.registerClient(
             this.radioRole,
             this.name,
             this.email,
@@ -107,11 +135,10 @@ export default {
             this.birth,
             this.height,
             this.weight)
-        //TODO : Salvar usuario logado
-        cache.setUser(2)
+        this.registerResolve(res)
     },
     async registerDoctor(){
-      const user = await apiUserClient.registerDoctor(
+      const res = await apiUserClient.registerDoctor(
             this.radioRole,
             this.name,
             this.email,
@@ -119,8 +146,7 @@ export default {
             this.confirmPass,
             this.registro,
             this.especialidade)
-        //TODO : Salvar usuario logado
-        cache.setUser(2)
+        this.registerResolve(res)
     },
     async submitRegister(){
       console.log("SubmitRegister", this.radioRole)

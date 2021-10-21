@@ -6,8 +6,8 @@ class Cache {
     getUser() {
         return window.user
     }
-    setUser( id ){
-        window.user.id = id 
+    setUser( user ){
+        window.user = user 
         //TODO - preencher dados do usuário logado
     }
     clearUser(){

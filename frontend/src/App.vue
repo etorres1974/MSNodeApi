@@ -51,21 +51,44 @@
       <v-container
         class="py-8 px-6"
         fluid
-      >
-        <router-view/>
+      > 
+    
+        <router-view />
+        
+        <vtoast ref="vtoast" />
       </v-container>
+
     </v-main>
   </v-app>
+  
 </template>
 
 <script>
+import EventBus from "./services/event-bus"
+import vtoast from "./components/vtoast.vue"
   export default {
+    components :{ 
+      vtoast
+    },
+    mounted(){
+      EventBus.$on('success-toast', payload => {
+        this.$refs.vtoast.success({message: payload})
+      })
+      EventBus.$on('error-toast', payload => {
+        this.$refs.vtoast.error({message: payload})
+      })
+      EventBus.$on('user-login', payload => {
+        console.log("USER LOGIN", payload)
+      })
+    },
+    methods: {
+    },
     data: () => ({
       drawer: null,
       links: [
         ['mdi-account', 'Account', "/account"],
         ['mdi-view-agenda', 'Agenda', "/agenda"]
       ],
-    }),
+    })
   }
 </script>
