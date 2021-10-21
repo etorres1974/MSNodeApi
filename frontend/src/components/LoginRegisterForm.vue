@@ -33,7 +33,7 @@
         <v-text-field v-model="registro" placeholder="Registro Profissional"></v-text-field> 
         <v-text-field v-model="especialidade" placeholder="Especialidade Médica"></v-text-field> 
       </div>
-      <div v-if="radioRole == 'Paciente' ">
+      <div v-if="radioRole == 'Client' ">
         <v-text-field v-model="birth" placeholder="Data Nascimento"></v-text-field>
         <v-text-field v-model="height" placeholder="Altura"></v-text-field>
         <v-text-field v-model="weight" placeholder="Peso"></v-text-field>

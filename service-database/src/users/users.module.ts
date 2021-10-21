@@ -5,9 +5,10 @@ import { UserRepository } from './user.repository';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { ClientRepository } from 'src/client/client.repository';
+import { DoctorRepository } from 'src/doctor/doctor.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository, ClientRepository])],
+  imports: [TypeOrmModule.forFeature([UserRepository, ClientRepository, DoctorRepository])],
   providers: [UsersService],
   controllers: [UsersController],
 })

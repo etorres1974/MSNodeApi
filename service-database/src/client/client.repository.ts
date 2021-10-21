@@ -19,6 +19,7 @@ export class ClientRepository extends Repository<Client> {
     try{
         await client.save()
         console.log(`Client created to user ${user.name}`)
+        return client
     }catch(error){
         throw new InternalServerErrorException(
             "Erro ao salvar o Client no banco de dados + \n" + error.code

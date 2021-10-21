@@ -8,7 +8,6 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dtos/return-user.dto';
 import { MessagePattern } from '@nestjs/microservices';
-import { CreateClientDto } from 'src/client/dtos/create-client.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,14 +15,10 @@ export class UsersController {
 
   @MessagePattern('signUp')
   async createUser(
-    @Body() createUserDto: CreateUserDto
+    @Body() createUserDto: CreateUserDto 
   ): Promise<ReturnUserDto> {
-    const user = await this.usersService.createUser(createUserDto);
-    var message = user ? "Success" : "Fail"
-    return {
-      user,
-      message
-    };
+    const UserResponse = await this.usersService.createUser(createUserDto);
+    return UserResponse
   }
 
   @MessagePattern('login')
@@ -37,8 +32,9 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findUserById(@Param('id') id): Promise<ReturnUserDto> {
+  async findUserById(@Param('id') id) {
     const user = await this.usersService.findUserById(id);
+    //TODO - Adicionar Spec
     var message = user ? "Success" : "Fail"
     return {
       user,

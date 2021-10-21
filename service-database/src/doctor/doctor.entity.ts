@@ -13,7 +13,7 @@ import {
 
     @PrimaryGeneratedColumn()
     id: number;
-
+    
     @OneToOne( () => User, user => user.id, { onDelete : 'CASCADE'})
     @JoinColumn()
     userId: string;
