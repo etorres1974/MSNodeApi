@@ -64,8 +64,7 @@
       drawer: null,
       links: [
         ['mdi-account', 'Account', "/account"],
-        ['mdi-shopping', 'Shopping', "/shopping"],
-        ['mdi-cart', 'Cart', "/cart"],
+        ['mdi-view-agenda', 'Agenda', "/agenda"]
       ],
     }),
   }

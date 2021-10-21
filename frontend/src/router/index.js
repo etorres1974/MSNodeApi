@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Account from '@/views/Account'
-import Shopping from '@/views/Shopping'
-import Cart from '@/views/Cart'
+import Agenda from '@/views/Agenda'
 
 Vue.use(Router)
 
@@ -14,14 +13,9 @@ export default new Router({
       component: Account
     },
     {
-      path: '/shopping',
-      name: 'Shopping',
-      component: Shopping
+      path: '/agenda',
+      name: 'Agenda',
+      component: Agenda
     },
-    {
-      path: '/cart',
-      name: 'Cart',
-      component: Cart
-    }
   ]
 })
