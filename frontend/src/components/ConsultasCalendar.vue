@@ -38,12 +38,15 @@
         :event-overlap-mode="mode"
         :event-overlap-threshold="30"
         :event-color="getEventColor"
+        @click:date="clickDate"
+        @click:event="clickEvent"
         @change="getEvents"
       ></v-calendar>
     </v-sheet>
   </div>
 </template>
 <script>
+import cache from "../services/cache"
   export default {
     data: () => ({
       type: 'month',
@@ -55,16 +58,27 @@
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1']
 
     }),
+    computed: {
+        getAgendaEvents(){
+            return null //TODO cache.getAgendaEvents()
+        }
+    },
     methods: {
+      clickDate({date}){
+        console.log("CLICK DATE", date)
+      },
+      clickEvent({ nativeEvent, event }){
+        console.log("CLICK Event native", nativeEvent)
+        console.log("CLICK Event", event)
+      },
       getEvents ({ start, end }) {
-        const events = []
+
         const min = new Date(`${start.date}T00:00:00`)
         const max = new Date(`${end.date}T23:59:59`)
-        for (let i = 0; i < 10; i++) {
-          events.push(this.mockEvent(min,max))
-        }
-
-        this.events = events
+        const events = this.getAgendaEvents || this.getMockEventList(min,max)
+        console.log("Agenda Min  ", min)
+        console.log("Agenda Max ", max)
+        this.events = events.filter(e=> e.start >= min &&  e.end <= max)
       },
       event(name, start, end){
           return {
@@ -74,6 +88,14 @@
             color: this.randomColor(),
             timed: true,
           }
+      },
+      getMockEventList(min , max){
+        const events = []
+        for (let i = 0; i < 5; i++) {
+          events.push(this.mockEvent(min,max))
+        }
+        console.log("Mock events ", events )
+        return events
       },
       mockEvent(min, max){
           const firstTimestamp = this.rnd(min.getTime(), max.getTime())
