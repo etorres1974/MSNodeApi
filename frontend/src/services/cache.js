@@ -1,14 +1,23 @@
 
 class Cache {
     constructor(){
+        window.cache = this
         this.clearUser()
     }
     getUser() {
         return window.user
     }
-    setUser( user ){
+    setUser( payload ){
+        console.log("payload", payload)
+        const { user, spec } = payload
         window.user = user 
-        //TODO - preencher dados do usuário logado
+        window.spec = spec
+    }
+    isUserClient(){ 
+        return window.user.role == "Client"
+    }
+    isUserDoctor(){ 
+        return window.user.role == "Doctor"
     }
     clearUser(){
         window.user = {}

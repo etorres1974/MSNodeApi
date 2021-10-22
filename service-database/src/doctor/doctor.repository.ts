@@ -6,9 +6,17 @@ import {
 } from "@nestjs/common";
 import { Doctor } from './doctor.entity';
 import { CreateDoctorDto } from "./dtos/create-doctor.dto";
+import { NotFoundException } from '@nestjs/common';
 @EntityRepository(Doctor)
 export class DoctorRepository extends Repository<Doctor> {
 
+    async getDoctor(userId: string): Promise<Doctor> {
+        const Doctor = await this.findOne( {userId : userId });
+    
+        if (!Doctor) throw new NotFoundException('Usuário não encontrado');
+    
+        return Doctor;
+    }
 
   async createDoctor(createDoctorDto : CreateDoctorDto, user : User){
     const Doctor = this.create()

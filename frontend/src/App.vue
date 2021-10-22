@@ -66,6 +66,7 @@
 <script>
 import EventBus from "./services/event-bus"
 import vtoast from "./components/vtoast.vue"
+import cache from "./services/cache"
   export default {
     components :{ 
       vtoast
@@ -79,6 +80,7 @@ import vtoast from "./components/vtoast.vue"
       })
       EventBus.$on('user-login', payload => {
         console.log("USER LOGIN", payload)
+        cache.setUser(payload)
       })
     },
     methods: {

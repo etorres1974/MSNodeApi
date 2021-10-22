@@ -6,9 +6,19 @@ import {
 } from "@nestjs/common";
 import { Client } from './client.entity';
 import { CreateClientDto } from "./dtos/create-client.dto";
+import { NotFoundException } from '@nestjs/common';
+
 @EntityRepository(Client)
 export class ClientRepository extends Repository<Client> {
 
+
+    async getClient(userId: string): Promise<Client> {
+        const client = await this.findOne( {userId : userId });
+    
+        if (!client) throw new NotFoundException('Usuário não encontrado');
+    
+        return client;
+    }
 
   async createClient(createClientDto : CreateClientDto, user : User){
     const client = this.create()

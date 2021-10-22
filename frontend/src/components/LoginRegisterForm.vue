@@ -121,7 +121,7 @@ export default {
         const { user, spec , message} = res.data
         EventBus.$emit('success-toast', message)
       }else{
-        const { status , message} = data
+        const { status , message} = res.data
         EventBus.$emit('error-toast', message)
       }
     },
@@ -164,4 +164,3 @@ export default {
   },
 };
 </script>
-

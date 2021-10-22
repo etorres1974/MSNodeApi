@@ -22,13 +22,9 @@ export class UsersController {
   }
 
   @MessagePattern('login')
-  async login(@Body() loginDTO : LoginUserDto){
-    const user = await this.usersService.loginUser(loginDTO)
-    var message = user ? "Success" : "Fail"
-    return {
-      user,
-      message
-    }
+  async login(@Body() loginDTO : LoginUserDto) : Promise<ReturnUserDto> {
+    const UserResponse = await this.usersService.loginUser(loginDTO)
+    return UserResponse
   }
 
   @Get(':id')

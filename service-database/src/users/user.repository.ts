@@ -13,11 +13,12 @@ import * as crypto from 'crypto';
 export class UserRepository extends Repository<User> {
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, name, password} = createUserDto;
+    const { email, name, password, role} = createUserDto;
     const user = this.create();
     user.email = email;
     user.name = name;
     user.status = true;
+    user.role = role
     user.confirmationToken = crypto.randomBytes(32).toString('hex');
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
