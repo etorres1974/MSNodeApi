@@ -23,13 +23,12 @@ export default {
   },
   data () {
     return {
-      title: 'Agenda',
-      users : []
+      title: 'Agenda'
     }
   },
   methods: {
     async getAllUsers(){
-      this.users = await axios.get('allUsers')
+      //this.users = await axios.get('allUsers')
     }
   },
   computed:{
@@ -47,9 +46,6 @@ export default {
       return this.getSpec()
     }
 
-  },
-  created() {
-    this.getAllUsers()
   }
 }
 </script>

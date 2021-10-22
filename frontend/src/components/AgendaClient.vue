@@ -2,14 +2,17 @@
   <div class="hello">
     <h1>{{ title }}</h1>
     <h1>{{products}}</h1>
+    <consultascalendar></consultascalendar>
   </div>
 </template>
 
 <script>
 import axios from "../services/axios.js"
+import consultascalendar from "../components/ConsultasCalendar.vue"
 export default {
   name: 'Agenda Cliente',
   components:{
+    consultascalendar
   },
   data () {
     return {
