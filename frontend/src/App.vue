@@ -14,16 +14,14 @@
       app
     >
       <v-sheet
+        v-if="isLogged"
         color="grey lighten-4"
         class="pa-4"
       >
-        <v-avatar
-          class="mb-4"
-          color="grey darken-1"
-          size="64"
-        ></v-avatar>
-
-        <div>john@vuetifyjs.com</div>
+        <v-icon v-if="isDoctor"> mdi-doctor</v-icon>
+        <v-icon v-if="isClient"> mdi-account-injury</v-icon>
+        <div>{{user.name}}</div>
+        <div>{{user.email}}</div>
       </v-sheet>
 
       <v-divider></v-divider>
@@ -109,6 +107,15 @@ import cache from "./services/cache"
           return this.public_links.concat(this.private_links)
         else
           return this.public_links 
+      },
+      user(){
+        return cache.getUser() 
+      },
+      isClient(){
+      return cache.isUserClient()
+      },
+      isDoctor(){
+        return cache.isUserDoctor()
       }
     },
     data: () => ({

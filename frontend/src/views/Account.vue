@@ -1,11 +1,7 @@
 <template>
   <div class="hello">
     <div v-if="isLogged"> 
-        User
-        {{user}}
-        <br>
-        Spec
-        {{spec}}
+        <!-- Todo Edit User -->
         <v-btn @click="logout"> Logout </v-btn>
     </div>
     <div v-else> 

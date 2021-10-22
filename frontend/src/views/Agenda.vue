@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <div v-if="isLogged">
-      <agenda-cliente></agenda-cliente>
-      <agenda-doctor></agenda-doctor>
+      <agendaCliente v-if="isClient"></agendaCliente>
+      <agendaDoctor v-if="isDoctor"></agendaDoctor>
     </div>
     <div v-else>
         Logue primeiro 
@@ -12,14 +12,14 @@
 
 <script>
 import axios from "../services/axios.js"
-import agenda_cliente from "../components/AgendaClient.vue"
-import agenda_doctor from "../components/AgendaDoctor.vue"
+import agendaCliente from "../components/AgendaClient.vue"
+import agendaDoctor from "../components/AgendaDoctor.vue"
 import cache from "../services/cache"
 export default {
   name: 'Agenda',
   components:{
-    agenda_cliente,
-    agenda_doctor
+    agendaCliente,
+    agendaDoctor
   },
   data () {
     return {
@@ -33,9 +33,20 @@ export default {
     }
   },
   computed:{
-    isLogged() {
-      return cache.isLogged
+    isLogged(){
+        this.updated
+        return cache.getUser() != null
+    },
+    isClient(){
+      return cache.isUserClient()
+    },
+    isDoctor(){
+      return cache.isUserDoctor()
+    },
+    getSpec(){
+      return this.getSpec()
     }
+
   },
   created() {
     this.getAllUsers()
