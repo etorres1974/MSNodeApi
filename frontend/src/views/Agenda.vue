@@ -1,18 +1,25 @@
 <template>
   <div class="hello">
-    TODO - Mostrar Agenda Certa
+    <div v-if="isLogged">
+      <agenda-cliente></agenda-cliente>
+      <agenda-doctor></agenda-doctor>
+    </div>
+    <div v-else>
+        Logue primeiro 
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "../services/axios.js"
-import agendaCliente from "../components/AgendaClient.vue"
-import agendaDoctor from "../components/AgendaDoctor.vue"
+import agenda_cliente from "../components/AgendaClient.vue"
+import agenda_doctor from "../components/AgendaDoctor.vue"
+import cache from "../services/cache"
 export default {
   name: 'Agenda',
   components:{
-    agendaCliente,
-    agendaDoctor
+    agenda_cliente,
+    agenda_doctor
   },
   data () {
     return {
@@ -27,7 +34,7 @@ export default {
   },
   computed:{
     isLogged() {
-      return this.users.length > 0
+      return cache.isLogged
     }
   },
   created() {

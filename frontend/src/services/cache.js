@@ -7,6 +7,9 @@ class Cache {
     getUser() {
         return window.user
     }
+    getSpec() {
+        return window.spec
+    }
     setUser( payload ){
         console.log("payload", payload)
         const { user, spec } = payload
@@ -20,10 +23,11 @@ class Cache {
         return window.user.role == "Doctor"
     }
     clearUser(){
-        window.user = {}
+        window.user = null
+        window.spec = null
     }
     hasUser(){
-        return window.user != {}
+        return window.user != null
     }
 }
 const instance = new Cache()

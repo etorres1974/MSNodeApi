@@ -8,18 +8,18 @@
 <script>
 import axios from "../services/axios.js"
 export default {
-  title: 'Shopping',
+  title: 'Agenda Médico',
   components:{
   },
   data () {
     return {
-      title: 'Shopping',
+      title: 'Agenda Médico',
       products : []
     }
   },
   methods: {
     async getAllProducts(){
-      this.products = await axios.get('allProducts')
+      //this.products = await axios.get('allProducts')
     }
   },
   created() {

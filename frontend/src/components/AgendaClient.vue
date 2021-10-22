@@ -8,12 +8,12 @@
 <script>
 import axios from "../services/axios.js"
 export default {
-  name: 'Shopping',
+  name: 'Agenda Cliente',
   components:{
   },
   data () {
     return {
-      title: 'Cart',
+      title: 'Agenda Client',
       users : {
         id : 1 //TODO FETCH FROM CURRENT USER
       },
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     async getMyProducts(){
-      this.products = await axios.get(`myProducts/${this.id}`)
+      //this.products = await axios.get(`myProducts/${this.id}`)
     }
   },
   created() {

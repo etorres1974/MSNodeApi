@@ -5,9 +5,8 @@
 
       <v-icon>mdi-square</v-icon>
 
-      <v-icon>mdi-circle</v-icon>
+      <v-icon>mdi-circle</v-icon> 
 
-      <v-icon>mdi-triangle</v-icon>
     </v-system-bar>
 
     <v-navigation-drawer
@@ -81,14 +80,44 @@ import cache from "./services/cache"
       EventBus.$on('user-login', payload => {
         console.log("USER LOGIN", payload)
         cache.setUser(payload)
+        this.$router.push("/agenda")
+        this.updated++
+      })
+      EventBus.$on('user-logout', payload => {
+        console.log("USER LOGOUT")
+        cache.clearUser()
+        this.$router.push("/account")
+        this.updated++
       })
     },
     methods: {
+      logout(){
+        cache.clearUser()
+        console.log("LOGOUT", cache.getUser() )
+        this.updated++
+      }
+    },
+    computed : {
+      isLogged(){
+        this.updated
+        return cache.getUser() != null
+
+      },
+      links(){
+        this.updated
+        if(this.isLogged)
+          return this.public_links.concat(this.private_links)
+        else
+          return this.public_links 
+      }
     },
     data: () => ({
+      updated : 0,
       drawer: null,
-      links: [
+      public_links: [
         ['mdi-account', 'Account', "/account"],
+      ],
+      private_links: [
         ['mdi-view-agenda', 'Agenda', "/agenda"]
       ],
     })
