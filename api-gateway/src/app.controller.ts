@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { AgendaClientDto } from "./dtos/agenda-cliente.dto";
+import { AgendaDoctorDto } from "./dtos/agenda-doctor.dto";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginDTO } from "./dtos/LoginDTO";
 import { MarcarConsultaDto } from "./dtos/marcar-consulta.dto";
@@ -32,6 +34,17 @@ export class AppController {
 
   @Post("/marcarConsulta")
   async marcarConsulta(@Body() marcarConsultaDto : MarcarConsultaDto){
-    return marcarConsultaDto
+    return await this.appService.marcarConsulta(marcarConsultaDto)
   }
+
+  @Post("/clientAgenda")
+  async PostClientAgenda( @Body() dto : AgendaClientDto ){
+    return await this.appService.getAgendaClient(dto)
+  }
+
+  @Post("/doctorAgenda")
+  async getDoctorgenda( @Body() dto : AgendaDoctorDto ){
+    return await this.appService.getAgendaDoctor(dto)
+  }
+
 }

@@ -1,5 +1,6 @@
 export class MarcarConsultaDto {
-    min: Date;
-    max: Date;
-    especialidade : string
-  }
+  clientId: string;
+  doctorId: string;
+  min : Date;
+  max : Date
+}
