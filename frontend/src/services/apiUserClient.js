@@ -38,7 +38,8 @@ class ApiUserClient {
             return { data , status }
         })
         console.log("Response", response)
-        return response
+        const { data , status } = response
+        return { data ,  status }
     }
 
     async registerDoctor(role,
@@ -59,8 +60,9 @@ class ApiUserClient {
             console.log(`Catch Error Register Doc ${status}`, data)
             return { data , status }
         })
-        console.log("Response", response)
-        return response
+        console.log("Response", response) 
+        const { data , status } = response
+        return { data ,  status }
     }
 }
 var instance = new ApiUserClient()

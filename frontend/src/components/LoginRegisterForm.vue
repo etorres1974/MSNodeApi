@@ -18,8 +18,8 @@
         <div>
            <v-radio-group v-model="radioRole">
               <v-radio
-                v-for="r in roles"
-                :key="r"
+                v-for="(r, i) in roles"
+                :key="i"
                 :label="`${r.placeholder}`"
                 :value="r.enum"
               ></v-radio>
@@ -31,7 +31,14 @@
       
       <div v-if="radioRole == 'Doctor' && register "> 
         <v-text-field v-model="registro" placeholder="Registro Profissional"></v-text-field> 
+        <!--
         <v-text-field v-model="especialidade" placeholder="Especialidade Médica"></v-text-field> 
+        -->
+        <v-select
+          :items="especialidades"
+          label="Especialidades"
+          v-model="especialidade"
+        ></v-select>
       </div>
       <div v-if="radioRole == 'Client' && register ">
         <v-text-field v-model="birth" placeholder="Data Nascimento"></v-text-field>
@@ -50,7 +57,6 @@
     <div id="actions">
       <v-btn @click="submit">Submit</v-btn>
     </div>
-    
   </div>
 </template>
 
@@ -58,6 +64,7 @@
 import EventBus from '../services/event-bus'
 import apiUserClient from "../services/apiUserClient";
 import cache from "../services/cache.js"
+import apiAgendaClient from "../services/apiAgendaClient"
 export default {
   name: "LoginRegisterFormt",
   data() {
@@ -82,11 +89,19 @@ export default {
 
       //Doctor
       registro : "",
-      especialidade : ""
+      especialidade : "",
 
+      especialidades : []
     };
   },
+  async created() {
+    this.especialidades =  await this.getAgenda()
+  },
   methods: {
+    async getAgenda(){
+      const {data, status} = await apiAgendaClient.getSpecs()
+      return data.especs
+    },
     toggleForm() {
       this.login = !this.login;
       this.register = !this.register;
@@ -106,6 +121,7 @@ export default {
           this.loginFail(res.data)
     },
     loginSuccess(data){
+        console.log("LOGIN SUCCES", data)
         const { user, spec , message} = data
         cache.setUser({ user,spec })
         EventBus.$emit('success-toast', message)
@@ -115,11 +131,11 @@ export default {
         const { status , message} = data
         EventBus.$emit('error-toast', message)
     },
-    registerResolve(res){
-      console.log("REGISTER RESOLVE", res)
+    registerResolve(res){ 
+      console.log("REGISTER RESOLVE", res.data)
       if(res.status == 201){
         const { user, spec , message} = res.data
-        EventBus.$emit('success-toast', message)
+        EventBus.$emit('success-toast', message )
       }else{
         const { status , message} = res.data
         EventBus.$emit('error-toast', message)

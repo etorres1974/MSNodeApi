@@ -5,8 +5,9 @@ import { delay } from 'rxjs/operators';
 
 @Controller()
 export class AppController {
-  @MessagePattern('ping')
+  @MessagePattern('specs')
   ping(_: any) {
-    return of('pong').pipe(delay(1000));
+    const especializacoes = [ "Pediatra", "Ortopedista", "Oftamologista", "Neurologista", "Dentista", "Dermatologista"]
+    return of(especializacoes).pipe(delay(1));
   }
 }

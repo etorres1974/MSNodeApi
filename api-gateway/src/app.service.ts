@@ -11,14 +11,14 @@ export class AppService {
     @Inject("SERVICE_DATABASE") private readonly clientServiceDatabase: ClientProxy
   ) {}
 
-  pingServiceA()  {
+  getSpecs()  {
     const startTs = Date.now();
-    const pattern = 'ping';
+    const pattern = 'specs';
     const payload = {};
     return this.clientServiceA
       .send<string>(pattern, payload)
       .pipe(
-        map((message: string) => ({ message, duration: Date.now() - startTs }))
+        map((especs) => ({ especs, duration: Date.now() - startTs }))
       );
   }
 

@@ -17,10 +17,10 @@ class Cache {
         window.spec = spec
     }
     isUserClient(){ 
-        return window.user.role == "Client"
+        return window.user.role == "Client" || false
     }
     isUserDoctor(){ 
-        return window.user.role == "Doctor"
+        return window.user.role == "Doctor" || false
     }
     clearUser(){
         window.user = null

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginDTO } from "./dtos/LoginDTO";
+import { MarcarConsultaDto } from "./dtos/marcar-consulta.dto";
 
 @Controller()
 export class AppController {
@@ -9,9 +10,9 @@ export class AppController {
 
   private logger = new Logger('AppController')
 
-  @Get("/ping-a")
-  pingServiceA() {
-    return this.appService.pingServiceA();
+  @Get("/specs")
+  getSpecs() {
+    return this.appService.getSpecs();
   }
 
   @Get("/allUsers")
@@ -27,5 +28,10 @@ export class AppController {
   @Post("/signUp")
   async signUp(@Body() createUserDto : CreateUserDto) {
     return await this.appService.signUp(createUserDto)
+  }
+
+  @Post("/marcarConsulta")
+  async marcarConsulta(@Body() marcarConsultaDto : MarcarConsultaDto){
+    return marcarConsultaDto
   }
 }

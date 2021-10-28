@@ -38,6 +38,7 @@
         :event-overlap-mode="mode"
         :event-overlap-threshold="30"
         :event-color="getEventColor"
+        @click:time="clickTime"
         @click:date="clickDate"
         @click:event="clickEvent"
         @change="getEvents"
@@ -46,7 +47,7 @@
   </div>
 </template>
 <script>
-import cache from "../services/cache"
+import EventBus from "../services/event-bus"
   export default {
     data: () => ({
       type: 'month',
@@ -64,12 +65,16 @@ import cache from "../services/cache"
         }
     },
     methods: {
+      clickTime(obj){
+        console.log("CLICK TIME", obj)
+      },
       clickDate({date}){
         console.log("CLICK DATE", date)
+        EventBus.$emit("click-date", date)
       },
       clickEvent({ nativeEvent, event }){
-        console.log("CLICK Event native", nativeEvent)
         console.log("CLICK Event", event)
+        EventBus.$emit("click-event", event)
       },
       getEvents ({ start, end }) {
 
