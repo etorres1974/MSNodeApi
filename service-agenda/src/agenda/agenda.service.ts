@@ -6,6 +6,9 @@ import {
   import { AgendaRepository } from "../agenda/agenda.repository"
 import { MarcarConsultaDto } from "./dtos/marcar-consulta.dto";
 import { Agenda } from "./agenda.entity"
+import { ConsultarAgendaDto } from "./dtos/consultar-agenda.dto";
+import { min } from "node_modules/rxjs/dist/types";
+import { AgendaFiltradaDto } from "./dtos/agenda-filtrada.res.dto";
   @Injectable()
   export class AgendaService {
     constructor(
@@ -39,5 +42,37 @@ import { Agenda } from "./agenda.entity"
         });
         return agendas;
     }
+
+    async findAgendaByDateSpec(dto: ConsultarAgendaDto): Promise<AgendaFiltradaDto> {
+      const agendas = await this.agendaRepository.find({
+          where: {spec : dto.spec }
+      });
+      const ocupadas = agendas.filter( (row) => {
+        return row.min >= new Date(dto.min) && 
+                row.max <= new Date(dto.max)
+      })
+      var todas = this.agendaTotal(dto.min, dto.max)
+      const livres = todas.filter( (it) => {
+        return !ocupadas.map( (r)=> r.min ).includes(it)
+      })
+      return {todas, ocupadas, livres}
+    }
+
+    agendaTotal(min, max) : Array<Date>{
+      var lista : Array<Date> = []
+      const day = 86400000
+      var minTime = new Date(min).getTime()
+      var maxTime = new Date(max).getTime()
+      for(var d = minTime ; d < maxTime; d += day){
+        for(var h = 6; h < 18 ; h++){
+          var m = new Date(d) 
+              m.setHours(h)
+              lista.push(m)
+        }
+      }  
+      return lista
+    }
+    
+
   }
   

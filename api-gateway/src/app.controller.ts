@@ -5,6 +5,8 @@ import { AgendaDoctorDto } from "./dtos/agenda-doctor.dto";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginDTO } from "./dtos/LoginDTO";
 import { MarcarConsultaDto } from "./dtos/marcar-consulta.dto";
+import { ConsultarAgendaDto } from "./dtos/consultar-agenda.dto"
+import { DoctorsIdsDto } from "./dtos/doctors-ids.dto";
 
 @Controller()
 export class AppController {
@@ -20,6 +22,11 @@ export class AppController {
   @Get("/allUsers")
   async getAllUsers() {
     return await this.appService.getAllUsers()
+  }
+
+  @Get("/allDoctors")
+  async getAllDoctors() {
+    return await this.appService.getAllDoctors()
   }
 
   @Post("/login")
@@ -45,6 +52,16 @@ export class AppController {
   @Post("/doctorAgenda")
   async getDoctorgenda( @Body() dto : AgendaDoctorDto ){
     return await this.appService.getAgendaDoctor(dto)
+  }
+
+  @Post("/consultarAgenda")
+  async consultarAgenda(@Body() dto : ConsultarAgendaDto){
+    return await this.appService.consultarAgenda(dto)
+  }
+
+  @Post("/doctorsByIds")
+  async getDoctorsByIds(@Body() dto : DoctorsIdsDto){
+    return await this.appService.doctorsById(dto)
   }
 
 }

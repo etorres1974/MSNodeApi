@@ -9,6 +9,7 @@ import { Controller,
   import { MarcarConsultaDto } from './dtos/marcar-consulta.dto';
   import { AgendaClientDto } from "./dtos/agenda-cliente.dto"
   import { AgendaDoctorDto} from "./dtos/agenda-doctor.dto"
+import { ConsultarAgendaDto } from './dtos/consultar-agenda.dto';
 
   @Controller('agenda')
   export class AgendaController {
@@ -46,6 +47,18 @@ import { Controller,
         agenda,
         message,
       };
+    }
+    
+    @MessagePattern("consultarAgenda")
+    async consultarAgenda(@Body() dto: ConsultarAgendaDto){
+    const agenda = await this.agendaService.findAgendaByDateSpec(dto)
+    var message = agenda ? "Success" : "Fail"
+    var info = { livres : agenda.livres.length, ocupados : agenda.ocupadas.length, total : agenda.todas.length}
+    return {
+      info,
+      agenda,
+      message,
+    };
     }
   
   }

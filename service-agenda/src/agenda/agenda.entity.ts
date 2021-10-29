@@ -19,6 +19,9 @@ import {
 
     @Column({ nullable: false, type: 'varchar', length: 64 })
     doctorId: string;
+
+    @Column({ nullable: false, type: 'varchar', length: 64 })
+    spec: string;
   
     @Column({ nullable: false })
     min: Date;

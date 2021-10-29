@@ -68,10 +68,10 @@ services:
 
   service-db:
     build:
-      context: ./service-database
+      context: ./service-users
       target: development
     volumes:
-      - ./service-database/src/:/usr/src/app
+      - ./service-users/src/:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:debug
     environment: 

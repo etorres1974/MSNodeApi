@@ -18,7 +18,7 @@ import { CreateDoctorDto } from "src/doctor/dtos/create-doctor.dto";
 import { ReturnUserDto } from "./dtos/return-user.dto";
 @Injectable()
 export class UsersService {
-  publicUserSelect: Array<keyof User> = ["email", "name", "id"];
+  publicUserSelect: Array<keyof User> = ["email", "name", "id", "role"];
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,

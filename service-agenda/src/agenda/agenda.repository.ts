@@ -10,12 +10,13 @@ import { MarcarConsultaDto } from "./dtos/marcar-consulta.dto"
 export class AgendaRepository extends Repository<Agenda> {
 
   async createAgenda(createAgendaDto: MarcarConsultaDto): Promise<Agenda> {
-    const { clientId, doctorId, min, max} = createAgendaDto;
+    const { clientId, doctorId, min, max, spec} = createAgendaDto;
     const agenda = this.create();
     agenda.clientId = clientId
     agenda.doctorId = doctorId
     agenda.min = min
     agenda.max = max
+    agenda.spec = spec
 
     try {
       await agenda.save();
