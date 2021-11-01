@@ -69,6 +69,14 @@ import cache from "./services/cache"
       vtoast
     },
     mounted(){
+      EventBus.$on ("marcar-consulta", payload => {
+        console.log("EVENT BUS MarcarConsulta", payload)
+        const { data, status} = payload
+        if(status == 201)
+          this.$refs.vtoast.success({message: "Consulta marcada !"})
+        else
+          this.$refs.vtoast.error({message: data.message})
+      })
       EventBus.$on('success-toast', payload => {
         console.log("EVENT BUS SUCCESS", payload)
         this.$refs.vtoast.success({message: payload})

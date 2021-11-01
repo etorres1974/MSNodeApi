@@ -29,6 +29,12 @@ class Cache {
     hasUser(){
         return window.user != null
     }
+    saveDocAgenda(agenda){
+        window.agenda = agenda
+    }
+    getAgenda() {
+        return window.agenda
+    }
 }
 const instance = new Cache()
 export default instance

@@ -2,14 +2,15 @@
   <div class="hello">
     <h1>{{ title }}</h1>
     <consultascalendar></consultascalendar>
+
   </div>
 </template>
 
 <script>
-import axios from "../services/axios.js"
 import consultascalendar from "../components/ConsultasCalendar.vue"
 import EventBus from "../services/event-bus"
 import cache from "../services/cache"
+import apiAgendaClient from "../services/apiAgendaClient"
 export default {
    name: 'AgendaDoctor',
   components:{
@@ -18,10 +19,8 @@ export default {
   data () {
     return {
       title: 'Agenda Médico',
+      agenda : {}
     }
-  },
-  mounted(){
-    this.registerListeners()
   },
   destroyed() {
     this.unregisterListeners()
@@ -42,7 +41,8 @@ export default {
   },
   },
   computed: {
-    isDoctor(){return cache.isUserDoctor()}
+    isDoctor(){return cache.isUserDoctor()},
+    user() { return cache.getUser() }
   },
 }
 </script>

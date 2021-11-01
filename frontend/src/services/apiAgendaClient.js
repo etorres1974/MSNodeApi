@@ -61,6 +61,22 @@ class ApiAgendaClient {
       const { data , status } = res
       return { data ,  status }
     }
+
+  async getDoctorAgenda(doctorId){
+    const DTO = { doctorId }
+    console.log( "DTO", DTO )
+    const res = await axios.post('doctorAgenda', DTO)
+      .catch( (error) => {
+          console.log(`Catch Error specs raw`, error)
+          const { data , status } = error.response
+          console.log(`Catch Error specs ${status}`, data)
+          return { data , status }
+      })
+    console.log("Spescs Res", res)
+    const { data , status } = res
+    return { data ,  status }
+
+  }
     
 }
 
