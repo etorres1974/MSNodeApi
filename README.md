@@ -8,3 +8,4 @@
 
  ## Configurações importantes
 O arquivo .env na raiz deste repositório contém as variaveis necessárias para subir os serviços, atualize conforme a sua disponibilidade de portase especialmente o path para o seu diretório local que funcionara como volume para os containers.
+
