@@ -20,6 +20,14 @@ import { AppService } from "./app.service";
           host: "service-db",
           port: process.env.SERVICE_DB_PORT
         }
+      },
+      {
+        name: "SERVICE_AGENDA",
+        transport: 0,//Transport.TCP
+        options: {
+          host: "service-agenda",
+          port: process.env.SERVICE_AGENDA_PORT
+        }
       }
     ])
   ],

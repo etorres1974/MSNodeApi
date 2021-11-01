@@ -8,6 +8,8 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dtos/return-user.dto';
 import { MessagePattern } from '@nestjs/microservices';
+import { DoctorsIdsDto } from "../doctor/dtos/doctorsIds.dto"
+import { UserRole } from './user.roles.enum';
 
 @Controller('users')
 export class UsersController {
@@ -48,5 +50,28 @@ export class UsersController {
       message,
     };
   }
+  //Doutors que nao estao na lista, pois a lista sao de agendamentos no periodo
+  @MessagePattern('doctorsById')
+  async doctorsById(@Body() dto : DoctorsIdsDto){
+    const users = await this.usersService.findAllUsers()
+    const doctors = users.filter( (it) => !dto.doctorsIds.includes(it.id))
+    var message = users ? "Success" : "Fail"
+    return {
+      total : users.length,
+      doctors,
+      message,
+    };
+  }
 
+  @MessagePattern('allDoctors')
+  async doctors(){
+    const users = await this.usersService.findAllUsers()
+    const doctors = users.filter( (it) => it.role == UserRole.DOCTOR)
+    var message = users ? "Success" : "Fail"
+    return {
+      total : doctors.length,
+      doctors,
+      message,
+    };
+  }
 }

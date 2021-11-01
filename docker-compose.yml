@@ -45,12 +45,33 @@ services:
     networks:
       - backend
 #-----------------DB-----------------#
-  service-db:
+  service-agenda:
     build:
-      context: ./service-database
+      context: ./service-agenda
       target: development
     volumes:
-      - ./service-database/src/:/usr/src/app
+      - ./service-agenda/src/:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    environment: 
+      NODE_ENV: development
+      PORT: ${SERVICE_AGENDA_PORT}
+      MYSQL_HOST: mysqldb
+      MYSQL_DATABASE: nest
+    ports:
+      - "${SERVICE_AGENDA_PORT}:${SERVICE_AGENDA_PORT}"
+    networks:
+      - mysql
+      - backend
+    depends_on:
+      - mysqldb
+
+  service-db:
+    build:
+      context: ./service-users
+      target: development
+    volumes:
+      - ./service-users/src/:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:debug
     environment: 

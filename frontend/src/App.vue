@@ -3,9 +3,9 @@
     <v-system-bar app>
       <v-spacer></v-spacer>
 
-      <v-icon>mdi-square</v-icon>
+      <v-icon >mdi-square</v-icon>
 
-      <v-icon>mdi-circle</v-icon> 
+      <v-icon  >mdi-circle</v-icon> 
 
     </v-system-bar>
 
@@ -69,7 +69,16 @@ import cache from "./services/cache"
       vtoast
     },
     mounted(){
+      EventBus.$on ("marcar-consulta", payload => {
+        console.log("EVENT BUS MarcarConsulta", payload)
+        const { data, status} = payload
+        if(status == 201)
+          this.$refs.vtoast.success({message: "Consulta marcada !"})
+        else
+          this.$refs.vtoast.error({message: data.message})
+      })
       EventBus.$on('success-toast', payload => {
+        console.log("EVENT BUS SUCCESS", payload)
         this.$refs.vtoast.success({message: payload})
       })
       EventBus.$on('error-toast', payload => {
@@ -78,22 +87,19 @@ import cache from "./services/cache"
       EventBus.$on('user-login', payload => {
         console.log("USER LOGIN", payload)
         cache.setUser(payload)
-        this.$router.push("/agenda")
+        if(this.$route.path != "/agenda")
+          this.$router.push("/agenda")
         this.updated++
       })
       EventBus.$on('user-logout', payload => {
-        console.log("USER LOGOUT")
+        console.log("USER LOGOUT", this.$route.path)
         cache.clearUser()
-        this.$router.push("/account")
+        if(this.$route.path != "/account")
+          this.$router.push("/account")
         this.updated++
       })
     },
     methods: {
-      logout(){
-        cache.clearUser()
-        console.log("LOGOUT", cache.getUser() )
-        this.updated++
-      }
     },
     computed : {
       isLogged(){
@@ -112,7 +118,7 @@ import cache from "./services/cache"
         return cache.getUser() 
       },
       isClient(){
-      return cache.isUserClient()
+        return cache.isUserClient()
       },
       isDoctor(){
         return cache.isUserDoctor()

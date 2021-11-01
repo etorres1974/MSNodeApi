@@ -24,14 +24,15 @@ export default {
   },
   methods:{
     success(data) {
-      this.message = data.message || 'missing "message".'
+      console.log("TOAST", data)
+      this.message = data.message || 'Success'
       this.color = data.color || 'success'
       this.timer = data.timer || 2000
       this.icon = data.icon || 'mdi-check'
       this.showSnackbar = true 
     },
     error(data) {
-      this.message = data.message || 'missing "message".'
+      this.message = data.message || 'Error'
       this.color = data.color || 'error'
       this.timer = data.timer || 2000
       this.icon = data.icon || 'mdi-error'
